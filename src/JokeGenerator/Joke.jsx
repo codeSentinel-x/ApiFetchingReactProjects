@@ -16,14 +16,11 @@ function Joke() {
   const isAnyChecked = activeCat.length === 0;
   const isNoneChecked = activeFlags.length === 0;
 
-  //setup functions that check if any or none are checked on every rerender
-  //they clear activeCategory or activeFlag arrays checkboxes if so
-  useEffect(() => {
-    if (isAnyChecked) setActiveCat([]);
-  }, [isAnyChecked]);
-  useEffect(() => {
-    if (isNoneChecked) setActiveFlags([]);
-  }, [isNoneChecked]);
+  //functions that clear activeCat or activeFlag arrays when any or none is selected
+  const clearCategoryOrFlags = (type) => {
+    if (type === "any") setActiveCat([]);
+    if (type === "none") setActiveFlags([]);
+  };
 
   //that functions handles changes of the any checkbox and the none checkbox
   //They also clear the activeCat or activeFlags arrays if so
@@ -77,6 +74,9 @@ function Joke() {
           JokeType == "single"
             ? setOnePartJoke(`Error fetching joke:" ${data.message}`)
             : setTwoPartJoke(["Error fetching joke:", data.message]);
+          setCurrentCategory((prev) =>
+            JokeType == "single" ? ["", prev[1]] : [prev[0], ""]
+          );
           return;
         }
         JokeType == "single"
@@ -87,7 +87,8 @@ function Joke() {
             ? [data.category, prev[1]]
             : [prev[0], data.category]
         );
-      });
+      })
+      .catch((error) => console.error("Network error:", error));
   };
 
   return (
@@ -100,13 +101,13 @@ function Joke() {
         <JokeCatSelector
           isAnyChecked={isAnyChecked}
           activeCatArray={activeCat}
-          handleAnyChange={handleAnyChange}
+          handleAnyChange={() => clearCategoryOrFlags("any")}
           handleChanges={handleCategoryChange}
         />
         <JokeBlacklistSelector
           isNoneChecked={isNoneChecked}
           activeFlags={activeFlags}
-          handleNoneChange={handleNoneChange}
+          handleNoneChange={() => clearCategoryOrFlags("none")}
           handleChanges={handleFlagChange}
         />
       </div>
