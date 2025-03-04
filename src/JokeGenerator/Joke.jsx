@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import JokeButton from "./JokeButton";
-import JokeCat from "./JokeCat";
-import JokeBlacklist from "./JokeBlacklist";
 import JokeTypeSelector from "./JokeTypeSelector";
 import JokeCatSelector from "./JokeCatSelector";
 import JokeBlacklistSelector from "./JokeBlacklistSelector";
