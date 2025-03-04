@@ -90,7 +90,6 @@ function Joke() {
       });
   };
 
-  //comment for test
   return (
     <div className="Joke">
       <div className="switches">
